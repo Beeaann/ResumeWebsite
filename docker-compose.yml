@@ -1,0 +1,20 @@
+version: '3.8'
+
+services:
+  resume-website:
+    image: beeaann/luke-resume-website:latest
+    ports:
+      - "5000:5000"
+    environment:
+      # Email configuration - set these when running
+      - SMTP_SERVER=smtp.gmail.com
+      - SMTP_PORT=587
+      - EMAIL_ADDRESS=lukeslautterback@gmail.com
+      - EMAIL_PASSWORD=${EMAIL_PASSWORD}  # This will be read from environment variables
+    restart: unless-stopped
+    healthcheck:
+      test: ["CMD", "curl", "-f", "http://localhost:5000/"]
+      interval: 30s
+      timeout: 10s
+      retries: 3
+      start_period: 40s

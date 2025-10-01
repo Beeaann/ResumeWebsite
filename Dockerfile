@@ -8,7 +8,10 @@ WORKDIR /app
 ENV PYTHONDONTWRITEBYTECODE=1 \
     PYTHONUNBUFFERED=1 \
     FLASK_APP=app.py \
-    FLASK_ENV=production
+    FLASK_ENV=production \
+    SMTP_SERVER=smtp.gmail.com \
+    SMTP_PORT=587 \
+    EMAIL_ADDRESS=lukeslautterback@gmail.com
 
 # Install system dependencies
 RUN apt-get update && apt-get install -y \
