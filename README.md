@@ -81,12 +81,31 @@ ResumeWebsite/
    pip install -r requirements.txt
    ```
 
-4. **Run the application**
+4. **Set up environment variables (for email functionality)**
+   Set the email password as an environment variable:
+   ```bash
+   # Windows PowerShell:
+   $env:EMAIL_PASSWORD="your_gmail_app_password_here"
+   
+   # Windows Command Prompt:
+   set EMAIL_PASSWORD=your_gmail_app_password_here
+   
+   # Linux/macOS:
+   export EMAIL_PASSWORD="your_gmail_app_password_here"
+   ```
+   
+   **For Gmail:**
+   - Enable 2-factor authentication on your Gmail account
+   - Go to Google Account settings → Security → App passwords
+   - Generate an "App Password" for "Mail"
+   - Use that app password (not your regular password) as the environment variable
+
+5. **Run the application**
    ```bash
    python app.py
    ```
 
-5. **Open your browser**
+6. **Open your browser**
    Navigate to `http://localhost:5000` to view the website.
 
 ## 🎨 Customization
@@ -149,9 +168,16 @@ The application runs on `http://localhost:5000` by default.
 This project is containerized and deployed using Docker.
 
 #### Docker Deployment
-1. **Build the image**: `docker build -t luke-resume-website .`
-2. **Run the container**: `docker run -d -p 8080:5000 --name luke-resume-website luke-resume-website`
-3. **Access the website**: `http://localhost:8080`
+
+**Option 1: Using docker-compose (Recommended)**
+1. **Set environment variable**: `$env:EMAIL_PASSWORD="your_gmail_app_password_here"`
+2. **Run with docker-compose**: `docker-compose up --build`
+3. **Access the website**: `http://localhost:5000`
+
+**Option 2: Direct docker run**
+1. **Build the image**: `docker build -t beeaann/luke-resume-website:latest .`
+2. **Run the container**: `docker run -d -p 5000:5000 -e EMAIL_PASSWORD=your_gmail_app_password --name luke-resume-website beeaann/luke-resume-website:latest`
+3. **Access the website**: `http://localhost:5000`
 
 #### Live Website
 - **URL**: `https://lukeslautterback.com`
