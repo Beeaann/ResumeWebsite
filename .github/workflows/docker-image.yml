@@ -27,5 +27,5 @@ jobs:
         with:
           push: true
           tags: |
-            luke-resume-container:latest
-            luke-resume-container:${{ github.sha }}
+            luke-resume-website:latest
+            luke-resume-website:${{ github.sha }}
