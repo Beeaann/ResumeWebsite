@@ -31,4 +31,3 @@ jobs:
           cache-to: type=gha,mode=max
           tags: |
             ${{ secrets.DOCKER_USERNAME }}/luke-resume-website:latest
-            ${{ secrets.DOCKER_USERNAME }}/luke-resume-website:${{ github.sha }}
