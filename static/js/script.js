@@ -332,3 +332,81 @@ rainbowStyle.textContent = `
     }
 `;
 document.head.appendChild(rainbowStyle);
+
+// Dark Mode Toggle Functionality
+document.addEventListener('DOMContentLoaded', () => {
+    const darkModeToggle = document.getElementById('darkModeToggle');
+    const darkModeIcon = document.getElementById('darkModeIcon');
+    const body = document.body;
+    
+    // Check for saved theme preference or default to light mode
+    const currentTheme = localStorage.getItem('theme') || 'light';
+    body.setAttribute('data-theme', currentTheme);
+    
+    // Update icon based on current theme
+    updateDarkModeIcon(currentTheme);
+    
+    // Dark mode toggle event listener
+    darkModeToggle.addEventListener('click', () => {
+        const currentTheme = body.getAttribute('data-theme');
+        const newTheme = currentTheme === 'dark' ? 'light' : 'dark';
+        
+        body.setAttribute('data-theme', newTheme);
+        localStorage.setItem('theme', newTheme);
+        updateDarkModeIcon(newTheme);
+        
+        // Add a subtle animation to the toggle button
+        darkModeToggle.style.transform = 'scale(0.95)';
+        setTimeout(() => {
+            darkModeToggle.style.transform = 'scale(1)';
+        }, 150);
+    });
+    
+    function updateDarkModeIcon(theme) {
+        if (theme === 'dark') {
+            darkModeIcon.className = 'fas fa-sun';
+        } else {
+            darkModeIcon.className = 'fas fa-moon';
+        }
+    }
+    
+    // Update navbar background for dark mode
+    const updateNavbarBackground = () => {
+        const navbar = document.querySelector('.navbar');
+        const isDark = body.getAttribute('data-theme') === 'dark';
+        
+        if (window.scrollY > 100) {
+            navbar.style.background = isDark ? 'rgba(17, 24, 39, 0.98)' : 'rgba(255, 255, 255, 0.98)';
+            navbar.style.boxShadow = '0 2px 20px rgba(0, 0, 0, 0.1)';
+        } else {
+            navbar.style.background = isDark ? 'rgba(17, 24, 39, 0.95)' : 'rgba(255, 255, 255, 0.95)';
+            navbar.style.boxShadow = 'none';
+        }
+    };
+    
+    // Override the existing navbar scroll listener to work with dark mode
+    window.removeEventListener('scroll', () => {
+        const navbar = document.querySelector('.navbar');
+        if (window.scrollY > 100) {
+            navbar.style.background = 'rgba(255, 255, 255, 0.98)';
+            navbar.style.boxShadow = '0 2px 20px rgba(0, 0, 0, 0.1)';
+        } else {
+            navbar.style.background = 'rgba(255, 255, 255, 0.95)';
+            navbar.style.boxShadow = 'none';
+        }
+    });
+    
+    // Add new scroll listener that respects dark mode
+    window.addEventListener('scroll', updateNavbarBackground);
+    
+    // Update navbar background when theme changes
+    const observer = new MutationObserver((mutations) => {
+        mutations.forEach((mutation) => {
+            if (mutation.type === 'attributes' && mutation.attributeName === 'data-theme') {
+                updateNavbarBackground();
+            }
+        });
+    });
+    
+    observer.observe(body, { attributes: true });
+});

@@ -29,6 +29,7 @@ A modern, responsive Flask website showcasing Luke Slautterback's professional r
 ```
 ResumeWebsite/
 ├── app.py                 # Main Flask application
+├── Dockerfile            # Docker container configuration
 ├── requirements.txt       # Python dependencies
 ├── README.md             # Project documentation
 ├── Luke Slautterback Resume.pdf  # Resume PDF file
@@ -39,7 +40,8 @@ ResumeWebsite/
     │   └── style.css     # Main stylesheet
     ├── js/
     │   └── script.js     # JavaScript functionality
-    └── images/           # Image assets (if any)
+    └── images/
+        └── profile.jpg   # Profile image
 ```
 
 ## 🚀 Quick Start
@@ -142,25 +144,19 @@ ResumeWebsite/
 ### Local Development
 The application runs on `http://localhost:5000` by default.
 
-### Production Deployment
+### Production Deployment (Docker)
 
-#### Option 1: Heroku
-1. Create a `Procfile` in the root directory:
-   ```
-   web: gunicorn app:app
-   ```
-2. Install gunicorn: `pip install gunicorn`
-3. Deploy to Heroku following their documentation
+This project is containerized and deployed using Docker.
 
-#### Option 2: PythonAnywhere
-1. Upload your files to PythonAnywhere
-2. Configure the web app to use your Flask application
-3. Set the working directory and virtual environment
+#### Docker Deployment
+1. **Build the image**: `docker build -t luke-resume-website .`
+2. **Run the container**: `docker run -d -p 8080:5000 --name luke-resume-website luke-resume-website`
+3. **Access the website**: `http://localhost:8080`
 
-#### Option 3: VPS/Cloud Server
-1. Install Python and dependencies on your server
-2. Use a WSGI server like Gunicorn with Nginx
-3. Set up SSL certificates for HTTPS
+#### Live Website
+- **URL**: `https://lukeslautterback.com`
+- **Hosted on**: Synology NAS with Cloudflare SSL
+- **Container**: Running on port 8080
 
 ## 📱 Browser Support
 
