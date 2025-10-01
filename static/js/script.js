@@ -108,17 +108,17 @@ document.addEventListener('DOMContentLoaded', () => {
 });
 
 // Contact form handling
-const contactForm = document.querySelector('.contact-form form');
+const contactForm = document.querySelector('#contactForm');
 if (contactForm) {
-    contactForm.addEventListener('submit', (e) => {
+    contactForm.addEventListener('submit', async (e) => {
         e.preventDefault();
         
         // Get form data
         const formData = new FormData(contactForm);
-        const name = contactForm.querySelector('input[type="text"]').value;
-        const email = contactForm.querySelector('input[type="email"]').value;
-        const subject = contactForm.querySelectorAll('input[type="text"]')[1].value;
-        const message = contactForm.querySelector('textarea').value;
+        const name = formData.get('name');
+        const email = formData.get('email');
+        const subject = formData.get('subject');
+        const message = formData.get('message');
         
         // Simple validation
         if (!name || !email || !subject || !message) {
@@ -131,9 +131,35 @@ if (contactForm) {
             return;
         }
         
-        // Simulate form submission
-        showNotification('Thank you for your message! I\'ll get back to you soon.', 'success');
-        contactForm.reset();
+        // Show loading state
+        const submitButton = contactForm.querySelector('button[type="submit"]');
+        const originalText = submitButton.textContent;
+        submitButton.textContent = 'Sending...';
+        submitButton.disabled = true;
+        
+        try {
+            // Submit form data
+            const response = await fetch('/contact', {
+                method: 'POST',
+                body: formData
+            });
+            
+            const result = await response.json();
+            
+            if (result.success) {
+                showNotification(result.message, 'success');
+                contactForm.reset();
+            } else {
+                showNotification(result.message, 'error');
+            }
+        } catch (error) {
+            console.error('Error submitting form:', error);
+            showNotification('Sorry, there was an error sending your message. Please try again.', 'error');
+        } finally {
+            // Reset button state
+            submitButton.textContent = originalText;
+            submitButton.disabled = false;
+        }
     });
 }
 
