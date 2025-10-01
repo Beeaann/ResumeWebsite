@@ -25,7 +25,10 @@ jobs:
       - name: Build and push
         uses: docker/build-push-action@v5
         with:
+          context: .
           push: true
+          cache-from: type=gha
+          cache-to: type=gha,mode=max
           tags: |
-            luke-resume-website:latest
-            luke-resume-website:${{ github.sha }}
+            ${{ secrets.DOCKER_USERNAME }}/luke-resume-website:latest
+            ${{ secrets.DOCKER_USERNAME }}/luke-resume-website:${{ github.sha }}
